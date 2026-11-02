@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:17
+    restart: always
+    environment:
+      POSTGRES_USER: didacta
+      POSTGRES_PASSWORD: didacta
+      POSTGRES_DB: didacta
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./didacta_db.sql:/docker-entrypoint-initdb.d/didacta_db.sql
+
+volumes:
+  pgdata:
