@@ -1,0 +1,20 @@
+{
+  "name": "Didacta Dev Environment",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "moby": false
+    }
+  },
+  "forwardPorts": [5432],
+  "postCreateCommand": "docker compose -f sql/docker-compose.yml up -d",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-azuretools.vscode-containers",
+        "cweijan.vscode-database-client2",
+        "cweijan.dbclient-jdbc"
+      ]
+    }
+  }
+}
