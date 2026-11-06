@@ -1,6 +1,6 @@
 // Troque pela URL pública da porta 3000 do seu Codespace
 // (aba Ports → porta 3000 → copiar o "Forwarded Address", sem barra no final)
-export const API_URL = 'https://SEU-CODESPACE-3000.app.github.dev';
+export const API_URL = 'https://humble-space-memory-g4v5qw964pj6hvq5j-3000.app.github.dev';
 
 type Usuario = {
   id: number;
