@@ -66,8 +66,6 @@ export default function Register({ onGoToLogin }: Props) {
 
             <View style={style.boxTop}>
 
-                <SettingsButton />
-
                 <Image
                     source={Logo}
                     style={style.logo}

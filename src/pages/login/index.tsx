@@ -53,9 +53,7 @@ export default function Login({ onGoToRegister }: Props) {
         <View style={style.container}>
 
             <View style={style.boxTop}>
-
-                <SettingsButton />
-            
+    
                 <Image
                     source={Logo}
                     style={style.logo}

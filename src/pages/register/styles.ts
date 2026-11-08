@@ -17,7 +17,7 @@ export const style = StyleSheet.create({
         justifyContent: 'center',
     },
 
-    //Área rolável com os campos (rola quando o teclado ocupa a tela)
+    //Área rolável com os campos 
     boxMid: {
         flex: 1,
         width: '100%',

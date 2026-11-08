@@ -1,10 +1,3 @@
--- Didacta — Modelagem do banco de dados (PostgreSQL)
--- Projeto Integrador III — Sistemas de Informação / UNIPAM
-
--- =========================================================
--- Tabelas de apoio
--- =========================================================
-
 CREATE TABLE niveis_dificuldade (
     id      SERIAL PRIMARY KEY,
     nome    VARCHAR(20) UNIQUE NOT NULL -- Fácil, Médio, Difícil

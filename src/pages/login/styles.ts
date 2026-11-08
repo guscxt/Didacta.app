@@ -10,10 +10,9 @@ export const style = StyleSheet.create({
 
     },
 
-
     boxTop: {
 
-        height: Dimensions.get('window').height * 0.23, // ~22%, proporção da imagem
+        height: Dimensions.get('window').height * 0.23,
         width: '100%',
         backgroundColor: themas.colors.primary,
         alignItems: 'center',
@@ -37,7 +36,7 @@ export const style = StyleSheet.create({
 
 
     logo: {
-        marginTop:20,
+        marginTop: 20,
         width: 80,
         height: 80
     },
@@ -88,7 +87,7 @@ export const style = StyleSheet.create({
         fontWeight: 'bold'
     },
 
-    //Área fixa no rodapé: linha divisória + botão de Acesso Administrador
+    //linha divisória + botão de Acesso Administrador
     boxAdm: {
         flex: 1,
         width: '100%',
