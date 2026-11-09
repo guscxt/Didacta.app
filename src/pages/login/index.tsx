@@ -18,33 +18,37 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { login } from "../../services/api"
 import { Input } from "../../../components/Input"
 import { Button } from "../../../components/Button"
-import { SettingsButton } from "../../../components/SettingsButton"
+import { Sessao } from "../../global/types"
 
 type Props = {
-    onGoToRegister: () => void
+    onGoToRegister: () => void,
+    onLogin: (sessao: Sessao) => void
 }
 
-export default function Login({ onGoToRegister }: Props) {
+export default function Login({ onGoToRegister, onLogin }: Props) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassoword] = useState(true);
     const [loading, setLoading] = useState(false)
 
     async function getLogin(){
-        
-        try {
 
-            if(!email || !password){
-                return Alert.alert('Atenção', 'Informe os dados obrigatórios!')
-            }
+        if(!email || !password){
+            return Alert.alert('Atenção', 'Informe os dados obrigatórios!')
+        }
+
+        try {
+            setLoading(true)
 
             const resposta = await login(email.trim().toLowerCase(), password)
 
-            Alert.alert('Logado com sucesso!', `Bem-vindo, ${resposta.usuario.nome}`)
-            
+            // Entrou: o App troca para as abas
+            onLogin(resposta)
+
         } catch (error) {
             const mensagem = error instanceof Error ? error.message : 'Erro ao conectar com o servidor.'
             Alert.alert('Erro!', mensagem)
+            setLoading(false)
         }
     }
 
@@ -53,7 +57,8 @@ export default function Login({ onGoToRegister }: Props) {
         <View style={style.container}>
 
             <View style={style.boxTop}>
-    
+
+            
                 <Image
                     source={Logo}
                     style={style.logo}
@@ -85,6 +90,7 @@ export default function Login({ onGoToRegister }: Props) {
                     <Button
                         text="Entrar"
                         loading={loading}
+                        disabled={loading}
                         onPress={()=>getLogin()}
                     />
 
