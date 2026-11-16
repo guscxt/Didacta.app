@@ -1,3 +1,4 @@
+-- Active: 1794745571329@@127.0.0.1@5432@didacta@public
 CREATE TABLE niveis_dificuldade (
     id      SERIAL PRIMARY KEY,
     nome    VARCHAR(20) UNIQUE NOT NULL -- Fácil, Médio, Difícil
@@ -84,3 +85,8 @@ INSERT INTO niveis_dificuldade (nome) VALUES
 INSERT INTO areas (nome) VALUES
     ('Frações'), ('Porcentagem'), ('Equações'), ('Geometria'),
     ('Números Inteiros'), ('Álgebra'), ('Proporção');
+
+SELECT 
+    *
+FROM 
+    usuarios

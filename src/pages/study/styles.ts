@@ -8,16 +8,15 @@ export const style = StyleSheet.create({
         backgroundColor: themas.colors.bgScreen,
     },
 
-    body: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingHorizontal: 40,
+    content: {
+        padding: 20,
+        paddingBottom: 32,
     },
 
-    text: {
-        textAlign: 'center',
-        fontSize: 15,
+    instrucao: {
+        marginBottom: 16,
+        fontSize: 14,
+        fontWeight: '600',
         color: themas.colors.textMuted,
     },
 
