@@ -1,16 +1,16 @@
--- Active: 1794745571329@@127.0.0.1@5432@didacta@public
+-- Active: 1794867136381@@127.0.0.1@5432@didacta@public
 CREATE TABLE niveis_dificuldade (
     id      SERIAL PRIMARY KEY,
-    nome    VARCHAR(20) UNIQUE NOT NULL -- Fácil, Médio, Difícil
+    nome    VARCHAR(20) UNIQUE NOT NULL
 );
 
 CREATE TABLE areas (
     id      SERIAL PRIMARY KEY,
-    nome    VARCHAR(100) UNIQUE NOT NULL -- Frações, Porcentagem, Equações, Geometria...
+    nome    VARCHAR(100) UNIQUE NOT NULL 
 );
 
 -- =========================================================
--- Usuários (Aluno e Administrador)
+-- Usuários
 -- =========================================================
 
 CREATE TABLE usuarios (
@@ -32,15 +32,15 @@ CREATE TABLE questoes (
     nivel_id                INTEGER NOT NULL REFERENCES niveis_dificuldade(id),
     enunciado               TEXT NOT NULL,
     resposta_correta        TEXT NOT NULL,
-    resolucao_detalhada     TEXT NOT NULL, -- exibida quando o aluno erra (Tela 4)
-    criado_por              INTEGER REFERENCES usuarios(id), -- administrador que cadastrou
+    resolucao_detalhada     TEXT NOT NULL, 
+    criado_por              INTEGER REFERENCES usuarios(id), -- adm
     criado_em               TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
 CREATE INDEX idx_questoes_area_nivel ON questoes(area_id, nivel_id);
 
 -- =========================================================
--- Tentativas de resposta (ciclo Responder → Errar → Entender → Refazer)
+-- Tentativas de resposta
 -- =========================================================
 
 CREATE TABLE tentativas (
@@ -49,7 +49,7 @@ CREATE TABLE tentativas (
     questao_id          INTEGER NOT NULL REFERENCES questoes(id),
     resposta_dada       TEXT NOT NULL,
     correta             BOOLEAN NOT NULL,
-    tentativa_numero    INTEGER NOT NULL DEFAULT 1, -- incrementa a cada "Refazer" da mesma questão
+    tentativa_numero    INTEGER NOT NULL DEFAULT 1, 
     respondida_em       TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
@@ -57,7 +57,7 @@ CREATE INDEX idx_tentativas_aluno   ON tentativas(aluno_id);
 CREATE INDEX idx_tentativas_questao ON tentativas(questao_id);
 
 -- =========================================================
--- View: progresso do aluno por área (base do Painel de Progresso)
+-- Progresso do aluno por área 
 -- =========================================================
 
 CREATE VIEW progresso_por_area AS
@@ -75,9 +75,6 @@ JOIN questoes q ON q.id = t.questao_id
 JOIN areas a    ON a.id = q.area_id
 GROUP BY t.aluno_id, q.area_id, a.nome;
 
--- =========================================================
--- Dados iniciais sugeridos
--- =========================================================
 
 INSERT INTO niveis_dificuldade (nome) VALUES
     ('Fácil'), ('Médio'), ('Difícil');
@@ -86,7 +83,13 @@ INSERT INTO areas (nome) VALUES
     ('Frações'), ('Porcentagem'), ('Equações'), ('Geometria'),
     ('Números Inteiros'), ('Álgebra'), ('Proporção');
 
+--========================================================
+-- Teste de cadastro
+--========================================================
+
 SELECT 
     *
 FROM 
     usuarios
+
+DELETE FROM "usuarios" WHERE "id"=

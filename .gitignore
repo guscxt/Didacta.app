@@ -1,6 +1,5 @@
 # Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
 
-# dependencies
 node_modules/
 
 # Expo
@@ -40,9 +39,9 @@ yarn-error.*
 /ios
 /android
 
-# Variáveis de ambiente (segredos — nunca commitar)
+# Variáveis de ambiente 
 .env
 backend/.env
 
-# Build do backend (TypeScript compilado)
+# Build do backend 
 backend/dist/

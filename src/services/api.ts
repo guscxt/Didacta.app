@@ -1,5 +1,3 @@
-// Troque pela URL pública da porta 3000 do seu Codespace
-// (aba Ports → porta 3000 → copiar o "Forwarded Address", sem barra no final)
 export const API_URL = 'https://humble-space-memory-g4v5qw964pj6hvq5j-3000.app.github.dev';
 
 type Usuario = {
@@ -21,8 +19,6 @@ async function post<T>(rota: string, corpo: object): Promise<T> {
     body: JSON.stringify(corpo),
   });
 
-  // Lê como texto primeiro: se o servidor responder vazio ou com HTML,
-  // o app mostra uma mensagem útil em vez de "JSON Parse error"
   const texto = await resposta.text();
   let dados: any = null;
   try {
@@ -47,12 +43,11 @@ async function post<T>(rota: string, corpo: object): Promise<T> {
   return dados as T;
 }
 
-// Verifica e-mail e senha no banco (via backend) e devolve o token
+// Verifica e-mail e senha
 export function login(email: string, senha: string) {
   return post<LoginResponse>('/auth/login', { email, senha });
 }
 
-// Grava um novo usuário no banco (via backend)
 export function registrar(nome: string, email: string, senha: string) {
   return post<Usuario>('/auth/registrar', { nome, email, senha, papel: 'aluno' });
 }
