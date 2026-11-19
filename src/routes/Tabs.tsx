@@ -5,14 +5,13 @@ import { Ionicons } from '@expo/vector-icons'
 import { themas } from "../global/themes"
 import { Usuario } from "../global/types"
 import Home from "../pages/home"
-import Study from "../pages/study"
+import StudyStack from "./StudyStack"
 import Profile from "../pages/profile"
 
 const Tab = createBottomTabNavigator();
 
 type IconName = React.ComponentProps<typeof Ionicons>['name']
 
-// Ícone de cada aba: cheio quando está ativa, só o contorno quando não está
 const ICONES: Record<string, { ativo: IconName, inativo: IconName }> = {
     'Início': { ativo: 'home', inativo: 'home-outline' },
     'Estudar': { ativo: 'book', inativo: 'book-outline' },
@@ -44,7 +43,7 @@ export default function Tabs({ usuario, onLogout }: Props) {
             })}
         >
             <Tab.Screen name="Início" component={Home} />
-            <Tab.Screen name="Estudar" component={Study} />
+            <Tab.Screen name="Estudar" component={StudyStack} />
             <Tab.Screen name="Perfil">
                 {() => <Profile usuario={usuario} onLogout={onLogout} />}
             </Tab.Screen>

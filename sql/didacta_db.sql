@@ -1,4 +1,4 @@
--- Active: 1794918617624@@127.0.0.1@5432@didacta@public
+-- Active: 1795123193862@@127.0.0.1@5432@didacta@public
 CREATE TABLE niveis_dificuldade (
     id      SERIAL PRIMARY KEY,
     nome    VARCHAR(20) UNIQUE NOT NULL -- Fácil, Médio, Difícil

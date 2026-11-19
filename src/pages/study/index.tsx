@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView, Alert, LayoutAnimation } from "react-native";
-import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-import { ParamListBase } from "@react-navigation/native";
+import { View, Text, ScrollView, LayoutAnimation } from "react-native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import { style } from "./styles"
 import { areas, niveis } from "./dados"
-import { Area, Nivel } from "../../global/types"
+import { Area, Nivel, StudyStackParamList } from "../../global/types"
 import { Header } from "../../../components/Header"
 import { AreaItem } from "../../../components/AreaItem"
 
-export default function Study({ navigation }: BottomTabScreenProps<ParamListBase>) {
+export default function Study({ navigation }: NativeStackScreenProps<StudyStackParamList, 'Areas'>) {
     // id da área que está aberta (mostrando os níveis). null = nenhuma
     const [areaAberta, setAreaAberta] = useState<number | null>(null);
 
@@ -20,14 +19,13 @@ export default function Study({ navigation }: BottomTabScreenProps<ParamListBase
     }
 
     function escolherNivel(area: Area, nivel: Nivel){
-        // Em breve: abrir as questões desta área e deste nível
-        Alert.alert('Em breve', `Questões de ${area.rotulo}, nível ${nivel.nome}.`)
+        navigation.navigate('Questoes', { area, nivel })
     }
 
     return (
         <View style={style.container}>
 
-            <Header title="Áreas da Matemática" onBack={() => navigation.navigate('Início')} />
+            <Header title="Áreas da Matemática" onBack={() => navigation.getParent()?.navigate('Início')} />
 
             <ScrollView contentContainerStyle={style.content} showsVerticalScrollIndicator={false}>
 

@@ -5,6 +5,7 @@ import Login from './src/pages/login';
 import Register from './src/pages/register';
 import Tabs from './src/routes/Tabs';
 import { Sessao } from './src/global/types';
+import { SessaoProvider } from './src/contexts/SessaoContext';
 
 export default function App(){
   const [screen, setScreen] = useState<'login' | 'register'>('login');
@@ -13,14 +14,16 @@ export default function App(){
   // Logado: mostra as abas (Início, Estudar e Perfil)
   if(sessao){
     return (
-      <SafeAreaProvider>
-        <NavigationContainer>
-          <Tabs
-            usuario={sessao.usuario}
-            onLogout={() => { setSessao(null); setScreen('login'); }}
-          />
-        </NavigationContainer>
-      </SafeAreaProvider>
+      <SessaoProvider value={sessao}>
+        <SafeAreaProvider>
+          <NavigationContainer>
+            <Tabs
+              usuario={sessao.usuario}
+              onLogout={() => { setSessao(null); setScreen('login'); }}
+            />
+          </NavigationContainer>
+        </SafeAreaProvider>
+      </SessaoProvider>
     );
   }
 

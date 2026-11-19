@@ -26,3 +26,9 @@ export type Nivel = {
     cor: string         // cor do texto e da borda
     fundo: string       // cor de fundo do botão
 }
+
+// Telas da aba Estudar: a lista de áreas e as questões de uma área e nível
+export type StudyStackParamList = {
+    Areas: undefined
+    Questoes: { area: Area, nivel: Nivel }
+}
