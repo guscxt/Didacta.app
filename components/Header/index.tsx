@@ -14,7 +14,7 @@ type Props = {
 }
 
 export function Header({ title, subtitle, onBack }: Props){
-    // O app desenha por baixo da barra de status, então o topo precisa de um respiro extra
+   
     const insets = useSafeAreaInsets()
 
     return(

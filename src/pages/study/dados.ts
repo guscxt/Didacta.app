@@ -1,7 +1,5 @@
 import { Area, Nivel } from "../../global/types"
 
-// Os ids seguem a ordem do banco (tabela "areas").
-// Depois, esta lista virá do backend (GET /areas).
 export const areas: Area[] = [
     { id: 1, nome: 'Frações', rotulo: 'Frações', simbolo: '½' },
     { id: 2, nome: 'Porcentagem', rotulo: 'Porcentagem', simbolo: '%' },
@@ -12,7 +10,6 @@ export const areas: Area[] = [
     { id: 7, nome: 'Proporção', rotulo: 'Proporção', simbolo: '∝' },
 ]
 
-// Os ids seguem a ordem do banco (tabela "niveis_dificuldade").
 export const niveis: Nivel[] = [
     { id: 1, nome: 'Fácil', cor: '#16a34a', fundo: '#e8f6ed' },
     { id: 2, nome: 'Médio', cor: '#d97706', fundo: '#fdf1e1' },

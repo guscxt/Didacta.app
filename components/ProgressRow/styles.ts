@@ -30,7 +30,7 @@ export const style = StyleSheet.create({
         color: themas.colors.primary,
     },
 
-    //Barra de progresso (fundo e preenchimento)
+    //Barra de progresso 
     track: {
         height: 8,
         marginTop: 12,

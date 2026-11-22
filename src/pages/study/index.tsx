@@ -9,11 +9,11 @@ import { Header } from "../../../components/Header"
 import { AreaItem } from "../../../components/AreaItem"
 
 export default function Study({ navigation }: NativeStackScreenProps<StudyStackParamList, 'Areas'>) {
-    // id da área que está aberta (mostrando os níveis). null = nenhuma
+    
     const [areaAberta, setAreaAberta] = useState<number | null>(null);
 
     function alternarArea(id: number){
-        // Anima a abertura e o fechamento do painel
+        
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
         setAreaAberta(areaAberta === id ? null : id)
     }

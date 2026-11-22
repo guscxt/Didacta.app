@@ -32,7 +32,7 @@ export const style = StyleSheet.create({
         backgroundColor: '#fdecec',
     },
 
-    //Círculo com a letra (ou com o ícone de certo / errado)
+    //Círculo com a letra (ou com o ícone de certo/errado)
     circulo: {
         width: 28,
         height: 28,

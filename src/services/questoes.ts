@@ -49,7 +49,7 @@ async function requisitar<T>(token: string, metodo: 'GET' | 'POST', rota: string
     return dados as T;
 }
 
-// As questões de uma área e nível (sem o gabarito)
+
 export function listarQuestoes(token: string, areaId: number, nivelId: number) {
     return requisitar<Questao[]>(token, 'GET', `/questoes?area=${areaId}&nivel=${nivelId}`);
 }

@@ -22,7 +22,7 @@ export const style = StyleSheet.create({
         backgroundColor: '#fdecec',
     },
 
-    //Cores do título (também usadas nos ícones)
+    //Cores do título 
     corCorreta: {
         color: themas.colors.primary,
     },

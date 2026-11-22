@@ -10,8 +10,7 @@ import { BarChart } from "../../../components/BarChart"
 import { ProgressRow } from "../../../components/ProgressRow"
 
 export default function Home() {
-    // Por enquanto são dados fixos de exemplo.
-    // Depois, trocar por uma chamada ao backend (GET /progresso).
+
     const resumo: ResumoProgresso = resumoExemplo
 
     const barras = resumo.porConteudo.map(conteudo => ({

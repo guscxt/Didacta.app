@@ -3,9 +3,6 @@ import { Text, View, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { style } from "./styles";
 
-// normal: ainda não respondeu | selecionada: enviando a resposta
-// correta: a alternativa certa | errada: a que o aluno marcou e errou
-// neutra: as outras, depois de responder
 export type EstadoAlternativa = 'normal' | 'selecionada' | 'correta' | 'errada' | 'neutra'
 
 type Props = {
