@@ -6,7 +6,7 @@ import { style, PLOT_HEIGHT } from "./styles";
 
 type Barra = {
     rotulo: string,
-    valor: number   // de 0 a 100
+    valor: number   
 }
 
 type Props = {
@@ -45,7 +45,7 @@ export function BarChart({ titulo, dados }: Props){
                                 {dados.map(barra => (
                                     <View key={barra.rotulo} style={style.barColumn}>
                                         <LinearGradient
-                                            colors={[themas.colors.purple, themas.colors.magenta]}
+                                            colors={[themas.colors.purple, themas.colors.purple]}
                                             style={[style.bar, { height: (Math.max(0, Math.min(100, barra.valor)) / 100) * PLOT_HEIGHT }]}
                                         />
                                     </View>

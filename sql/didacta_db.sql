@@ -1,16 +1,17 @@
--- Active: 1795372401586@@127.0.0.1@5432@didacta@public
+-- Active: 1795381369217@@127.0.0.1@5432@didacta@public
+
 CREATE TABLE niveis_dificuldade (
     id      SERIAL PRIMARY KEY,
-    nome    VARCHAR(20) UNIQUE NOT NULL -- Fácil, Médio, Difícil
+    nome    VARCHAR(20) UNIQUE NOT NULL 
 );
 
 CREATE TABLE areas (
     id      SERIAL PRIMARY KEY,
-    nome    VARCHAR(100) UNIQUE NOT NULL -- Frações, Porcentagem, Equações, Geometria...
+    nome    VARCHAR(100) UNIQUE NOT NULL
 );
 
 -- =========================================================
--- Usuários 
+-- Usuários (Aluno e Administrador)
 -- =========================================================
 
 CREATE TABLE usuarios (
@@ -31,15 +32,15 @@ CREATE TABLE questoes (
     area_id                 INTEGER NOT NULL REFERENCES areas(id),
     nivel_id                INTEGER NOT NULL REFERENCES niveis_dificuldade(id),
     enunciado               TEXT NOT NULL,
-    resolucao_detalhada     TEXT NOT NULL, -- exibida quando o aluno erra (Tela 4)
-    criado_por              INTEGER REFERENCES usuarios(id), -- administrador que cadastrou
+    resolucao_detalhada     TEXT NOT NULL, 
+    criado_por              INTEGER REFERENCES usuarios(id), 
     criado_em               TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
 CREATE INDEX idx_questoes_area_nivel ON questoes(area_id, nivel_id);
 
 -- =========================================================
--- Alternativas das questões
+-- Alternativas das questões 
 -- =========================================================
 
 CREATE TABLE alternativas (
@@ -54,24 +55,25 @@ CREATE TABLE alternativas (
 CREATE UNIQUE INDEX uq_alternativa_correta ON alternativas(questao_id) WHERE correta;
 
 -- =========================================================
--- Tentativas de resposta 
+-- Tentativas de resposta
 -- =========================================================
 
 CREATE TABLE tentativas (
     id                  SERIAL PRIMARY KEY,
     aluno_id            INTEGER NOT NULL REFERENCES usuarios(id),
     questao_id          INTEGER NOT NULL REFERENCES questoes(id),
-    resposta_dada       TEXT NOT NULL, 
+    resposta_dada       TEXT NOT NULL,
     correta             BOOLEAN NOT NULL,
-    tentativa_numero    INTEGER NOT NULL DEFAULT 1,
-    respondida_em       TIMESTAMP NOT NULL DEFAULT NOW()
+    tentativa_numero    INTEGER NOT NULL DEFAULT 1, 
+    respondida_em       TIMESTAMP NOT NULL DEFAULT NOW(),
+    tempo_gasto_segundos INTEGER NOT NULL DEFAULT 0 CHECK (tempo_gasto_segundos >= 0)
 );
 
 CREATE INDEX idx_tentativas_aluno   ON tentativas(aluno_id);
 CREATE INDEX idx_tentativas_questao ON tentativas(questao_id);
 
 -- =========================================================
--- View: progresso do aluno por área 
+-- Progresso do aluno por área 
 -- =========================================================
 
 CREATE VIEW progresso_por_area AS

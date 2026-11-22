@@ -11,7 +11,7 @@ export const style = StyleSheet.create({
         backgroundColor: themas.colors.bgScreen,
     },
 
-    //Barra de progresso (fundo e preenchimento)
+    //Barra de progresso 
     track: {
         flex: 1,
         height: 8,

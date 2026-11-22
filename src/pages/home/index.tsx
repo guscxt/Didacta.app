@@ -1,29 +1,86 @@
-import React from "react";
-import { View, Text, ScrollView } from "react-native";
+import React, { useCallback, useState } from "react";
+import { View, Text, ScrollView, ActivityIndicator, RefreshControl } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 
 import { style } from "./styles"
 import { themas } from "../../global/themes"
-import { resumoExemplo, ResumoProgresso } from "./dados"
+import { useSessao } from "../../contexts/SessaoContext"
+import { ResumoProgresso, buscarProgresso } from "../../services/progresso"
+import { areas } from "../study/dados"
 import { Header } from "../../../components/Header"
 import { StatCard } from "../../../components/StatCard"
 import { BarChart } from "../../../components/BarChart"
 import { ProgressRow } from "../../../components/ProgressRow"
+import { Button } from "../../../components/Button"
+
+function rotuloDoConteudo(nome: string){
+    return areas.find(area => area.nome === nome)?.rotulo ?? nome
+}
 
 export default function Home() {
+    const { token } = useSessao()
 
-    const resumo: ResumoProgresso = resumoExemplo
+    const [resumo, setResumo] = useState<ResumoProgresso | null>(null)
+    const [carregando, setCarregando] = useState(true)      
+    const [atualizando, setAtualizando] = useState(false)   
+    const [erro, setErro] = useState<string | null>(null)
 
-    const barras = resumo.porConteudo.map(conteudo => ({
-        rotulo: conteudo.nome,
-        valor: conteudo.total > 0 ? Math.round((conteudo.acertos / conteudo.total) * 100) : 0,
-    }))
+    const carregar = useCallback(async () => {
+        setErro(null)
 
-    return (
-        <View style={style.container}>
+        try {
+            setResumo(await buscarProgresso(token))
+        } catch (error) {
+            setErro(error instanceof Error ? error.message : 'Não foi possível carregar o seu progresso.')
+        } finally {
+            setCarregando(false)
+            setAtualizando(false)
+        }
+    }, [token])
 
-            <Header title="Meu Progresso" subtitle="Acompanhe sua evolução" />
+    useFocusEffect(
+        useCallback(() => {
+            carregar()
+        }, [carregar])
+    )
 
-            <ScrollView contentContainerStyle={style.content} showsVerticalScrollIndicator={false}>
+    function conteudo(){
+        if(!resumo){
+            if(carregando){
+                return (
+                    <View style={style.centro}>
+                        <ActivityIndicator size="large" color={themas.colors.primary} />
+                    </View>
+                )
+            }
+
+            return (
+                <View style={style.centro}>
+                    <Text style={style.mensagem}>{erro}</Text>
+                    <Button text="Tentar de novo" onPress={() => { setCarregando(true); carregar() }} />
+                </View>
+            )
+        }
+
+        const barras = resumo.porConteudo.map(item => ({
+            rotulo: rotuloDoConteudo(item.nome),
+            valor: item.total > 0 ? Math.round((item.acertos / item.total) * 100) : 0,
+        }))
+
+        return (
+            <ScrollView
+                contentContainerStyle={style.content}
+                showsVerticalScrollIndicator={false}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={atualizando}
+                        onRefresh={() => { setAtualizando(true); carregar() }}
+                        colors={[themas.colors.primary]}
+                    />
+                }
+            >
+
+                {erro && <Text style={style.aviso}>Não foi possível atualizar agora. Puxe a tela para tentar de novo.</Text>}
 
                 <View style={style.grid}>
                     <StatCard
@@ -56,16 +113,30 @@ export default function Home() {
 
                 <Text style={style.sectionTitle}>Evolução por Conteúdo</Text>
 
-                {resumo.porConteudo.map(conteudo => (
-                    <ProgressRow
-                        key={conteudo.nome}
-                        nome={conteudo.nome}
-                        acertos={conteudo.acertos}
-                        total={conteudo.total}
-                    />
-                ))}
+                {resumo.porConteudo.length === 0 ? (
+                    <Text style={style.vazio}>Você ainda não respondeu nenhuma questão. Vá em Estudar e escolha um conteúdo para começar.</Text>
+                ) : (
+                    resumo.porConteudo.map(item => (
+                        <ProgressRow
+                            key={item.nome}
+                            nome={item.nome}
+                            acertos={item.acertos}
+                            total={item.total}
+                        />
+                    ))
+                )}
 
             </ScrollView>
+        )
+    }
+
+    return (
+        <View style={style.container}>
+
+            <Header title="Meu Progresso" subtitle="Acompanhe sua evolução" />
+
+            {conteudo()}
+
         </View>
     )
 }

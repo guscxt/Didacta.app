@@ -5,7 +5,6 @@ const SessaoContext = createContext<Sessao | null>(null);
 
 export const SessaoProvider = SessaoContext.Provider;
 
-// Qualquer tela do app logado pega o token e o usuário com: const { token, usuario } = useSessao()
 export function useSessao(): Sessao {
     const sessao = useContext(SessaoContext);
 

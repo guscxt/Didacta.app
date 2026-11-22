@@ -12,18 +12,22 @@ import { AlternativeItem, EstadoAlternativa } from "../../../components/Alternat
 import { FeedbackCard } from "../../../components/FeedbackCard"
 import { Button } from "../../../components/Button"
 
+// Cada área tem 10 questões por nível no banco
 const QUESTOES_POR_RODADA = 10
 
 export default function Questions({ navigation, route }: NativeStackScreenProps<StudyStackParamList, 'Questoes'>) {
     const { area, nivel } = route.params
     const { token } = useSessao()
     const rolagem = useRef<ScrollViewInstance>(null)
+    // Quando a questão apareceu (para medir quanto tempo o aluno levou)
+    const inicioDaQuestao = useRef(Date.now())
 
     // Carregamento das questões
     const [questoes, setQuestoes] = useState<Questao[]>([]);
     const [carregando, setCarregando] = useState(true);
     const [erro, setErro] = useState<string | null>(null);
 
+    // Andamento da rodada
     const [indice, setIndice] = useState(0);
     const [escolha, setEscolha] = useState<string | null>(null);
     const [resultado, setResultado] = useState<ResultadoResposta | null>(null);
@@ -39,6 +43,7 @@ export default function Questions({ navigation, route }: NativeStackScreenProps<
         try {
             const lista = await listarQuestoes(token, area.id, nivel.id)
             setQuestoes(lista)
+            inicioDaQuestao.current = Date.now()
         } catch (error) {
             setErro(error instanceof Error ? error.message : 'Não foi possível carregar as questões.')
         } finally {
@@ -61,14 +66,17 @@ export default function Questions({ navigation, route }: NativeStackScreenProps<
         setEnviando(true)
 
         try {
-            const resposta = await responderQuestao(token, questao.id, letra)
+            const segundos = Math.round((Date.now() - inicioDaQuestao.current) / 1000)
+            const resposta = await responderQuestao(token, questao.id, letra, segundos)
             setResultado(resposta)
 
+            // Conta o acerto só na primeira vez que o aluno responde a questão
             if(!jaRespondeu){
                 setJaRespondeu(true)
                 if(resposta.correta) setAcertosDePrimeira(acertos => acertos + 1)
             }
 
+            // Leva a tela até a resolução
             setTimeout(() => rolagem.current?.scrollToEnd({ animated: true }), 150)
         } catch (error) {
             setEscolha(null)
@@ -79,9 +87,10 @@ export default function Questions({ navigation, route }: NativeStackScreenProps<
     }
 
     function refazer(){
-        
+        // Volta a questão ao começo para o aluno tentar de novo
         setEscolha(null)
         setResultado(null)
+        inicioDaQuestao.current = Date.now()
         rolagem.current?.scrollTo({ y: 0, animated: true })
     }
 
@@ -95,6 +104,7 @@ export default function Questions({ navigation, route }: NativeStackScreenProps<
         setEscolha(null)
         setResultado(null)
         setJaRespondeu(false)
+        inicioDaQuestao.current = Date.now()
         rolagem.current?.scrollTo({ y: 0, animated: false })
     }
 
@@ -105,6 +115,7 @@ export default function Questions({ navigation, route }: NativeStackScreenProps<
         setJaRespondeu(false)
         setAcertosDePrimeira(0)
         setTerminou(false)
+        inicioDaQuestao.current = Date.now()
     }
 
     function sair(){

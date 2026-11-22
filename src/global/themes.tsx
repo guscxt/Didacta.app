@@ -6,8 +6,6 @@ export const themas = {
         gray: '#9c9a9aa4',
         lightGray: '#ecececde',
         bgScreen: '#f1f7fa',
-
-        // Cores usadas nas telas do app (Início, Estudar e Perfil)
         primaryDark: '#1e3a8a',
         card: '#ffffff',
         border: '#e4eaf4',

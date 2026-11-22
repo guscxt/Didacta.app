@@ -39,7 +39,6 @@ export const style = StyleSheet.create({
         flexDirection: 'row',
     },
 
-    //Números do eixo vertical (100 a 0)
     axis: {
         width: AXIS_WIDTH,
         height: PLOT_HEIGHT + 12,

@@ -38,6 +38,9 @@ export async function listar(req: RequisicaoAutenticada, res: Response) {
 export async function responder(req: RequisicaoAutenticada, res: Response) {
   const questaoId = Number(req.params.id);
   const letra = String(req.body?.letra ?? '').toUpperCase();
+  // Tempo que o aluno levou para responder, em segundos.
+  // Limitado a 10 minutos para não contar o tempo em que ele deixou o app aberto sem usar.
+  const segundos = Math.max(0, Math.min(600, Math.round(Number(req.body?.segundos) || 0)));
 
   if (!Number.isInteger(questaoId) || !['A', 'B', 'C', 'D'].includes(letra)) {
     return res.status(400).json({ erro: 'Informe a questão e a letra (A, B, C ou D).' });
@@ -65,12 +68,13 @@ export async function responder(req: RequisicaoAutenticada, res: Response) {
 
     // tentativa_numero conta quantas vezes este aluno já respondeu esta questão
     await pool.query(
-      `INSERT INTO tentativas (aluno_id, questao_id, resposta_dada, correta, tentativa_numero)
+      `INSERT INTO tentativas (aluno_id, questao_id, resposta_dada, correta, tentativa_numero, tempo_gasto_segundos)
        VALUES ($1, $2, $3, $4,
                (SELECT COALESCE(MAX(tentativa_numero), 0) + 1
                   FROM tentativas
-                 WHERE aluno_id = $1 AND questao_id = $2))`,
-      [req.usuario.id, questaoId, letra, correta]
+                 WHERE aluno_id = $1 AND questao_id = $2),
+               $5)`,
+      [req.usuario.id, questaoId, letra, correta, segundos]
     );
 
     return res.json({
